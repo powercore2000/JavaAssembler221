@@ -109,18 +109,7 @@ public class CodeModule {
 			
 			returnCode.append("111");
 			
-			/*
-			if(jump(components.get(3)) != null) {
-				
-				returnCode.append(comp(components.get(1)));
-				returnCode.append(dest(null));
-			}
-			
-			else {
-			returnCode.append(dest(components.get(1)));
-			returnCode.append(comp(components.get(2)));
-			}
-			*/
+
 			returnCode.append(comp(components.get(2)));
 			returnCode.append(dest(components.get(1)));			
 			returnCode.append(jump(components.get(3)));

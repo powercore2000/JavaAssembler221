@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import assembler.Main;
 
-class MainTest {
+class MainTests {
 
 	@Test
 	void testMainAddAsm() {

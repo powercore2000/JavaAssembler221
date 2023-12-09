@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import assembler.Main;
 import assembler.ParserModule;
 
-class ParserTests {
+class ParserModuleTests {
 
 	
 	@Test
