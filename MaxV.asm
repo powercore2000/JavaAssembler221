@@ -3,21 +3,23 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/06/max/MaxL.asm
 
-// Symbol-less version of the Max.asm program.
+// Contains user-defined variables.
 
-@0
+@num1
 D=M
-@1
+@num2
 D=D-M
-@10
+@12
 D;JGT
 @1
 D=M
-@12
-0;JMP
-@0
-D=M
 @2
 M=D
-@14
+@16
+0;JMP
+@0             
+D=M
+@max
+M=D
+@16
 0;JMP

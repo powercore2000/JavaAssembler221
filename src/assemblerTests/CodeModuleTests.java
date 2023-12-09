@@ -27,7 +27,7 @@ class CodeModuleTests {
 	
 	@Test
 	void testAInstruct() {
-		String binaryResult = CodeModule.aInstruction("@2");
+		String binaryResult = CodeModule.aInstructionStringConversion("@2");
 		System.out.println(binaryResult);
 		assertTrue(binaryResult == "0000000000000010");
 	}

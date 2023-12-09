@@ -116,24 +116,64 @@ public class CodeModule {
 		
 		else if (components.get(0) == "A_COMMAND") {
 			
-			returnCode.append(aInstruction(components.get(1)));
+			//Numeric A instruction
+			if(isNumeric(components.get(1))) {
+				//System.out.println("Normal int A command: " + components.get(1));
+				returnCode.append(aInstructionStringConversion(components.get(1)));	
+				return returnCode.toString();
+			}
+			
+			else {
+				//System.out.println();
+				//Symbolic A instruction
+				int address = SymbolTableModule.getAddress(components.get(1));
+				
+				if(address != -1) {
+					
+					returnCode.append(aInstructionIntConversion(address));	
+					return returnCode.toString();
+				}
+				
+				
+				//This is a variable A instruction
+				else {
+					//System.out.println();
+					address = SymbolTableModule.getNewVariableIndex();
+					SymbolTableModule.addNewVariableEntry(components.get(1));
+					returnCode.append(aInstructionIntConversion(address));
+					
+				}
+			}
+			
+			
+			
+			
 		}
 		
+		/*
 		else if (components.get(0) == "L_COMMAND") {
 			
-			
+			//Insert symbol table lookup code
 			returnCode.append("0000000000010000");
 		}
+		*/
 		
 		return returnCode.toString();
 	}
 	
-	public static String aInstruction(String value) {
+	public static String aInstructionStringConversion(String value) {
 		
 		int val = Integer.parseInt(value);
 		String bin = Integer.toBinaryString(0x10000 | val).substring(1);
 		return bin;
 	}
+	
+	public static String aInstructionIntConversion(int value) {
+		
+		String bin = Integer.toBinaryString(0x10000 | value).substring(1);
+		return bin;
+	}
+	
 	public static String jump(String mnemonic) {
 		
 		String codedJump = jumpInstructionTable.get(mnemonic);
@@ -155,16 +195,23 @@ public class CodeModule {
 	public static String comp(String mnemonic) {
 		
 		String codedComp = aBitInstructionTable.get(mnemonic) + compInstructionTable.get(mnemonic);
-		  System.out.println("A bit : " + aBitInstructionTable.get(mnemonic));
-		  System.out.println("comp bits bit : " + compInstructionTable.get(mnemonic));
-		  System.out.println("final comp bits : " + codedComp);
+		  //System.out.println("A bit : " + aBitInstructionTable.get(mnemonic));
+		  //System.out.println("comp bits bit : " + compInstructionTable.get(mnemonic));
+		  //System.out.println("final comp bits : " + codedComp);
 		return codedComp;
 		
 		
 	}
 
 
-
+	public static boolean isNumeric(String str) { 
+		  try {  
+		    Integer.parseInt(str);  
+		    return true;
+		  } catch(NumberFormatException e){  
+		    return false;  
+		  }  
+		}
 
 	
 	

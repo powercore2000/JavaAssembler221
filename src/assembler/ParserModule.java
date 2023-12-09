@@ -7,6 +7,7 @@ import java.util.List;
 public class ParserModule {
 
 	BufferedReader asmFileBuffer;
+	FileReader originalFile;
 	boolean moreCommands;
 	
 	String currentCommandType;
@@ -17,19 +18,34 @@ public class ParserModule {
 	
 	String currentCommandString;
 	String nextLine;
+	int currentLineNumber = 0;
 	
-	static List<String> binaryCodeLines = new ArrayList<String>();
+	List<List<String>> parsedAssembly = new ArrayList<List<String>>();
 	
+	List<String> binaryCodeLines = new ArrayList<String>();
 	
-	public static void StartBinaryCoding() {
+	SymbolTableModule symbolTable = new SymbolTableModule();
+	public void StartBinaryCoding() {
 		
 		binaryCodeLines.clear();
+		/*
+		try {
+			originalFile.reset();
+			asmFileBuffer = new BufferedReader(originalFile);
+			currentLineNumber = 0;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		//asmFileBuffer.reset();
 	}
 	
 	
 	public ParserModule(FileReader inputFile) {
 		
-		
+		originalFile = inputFile;
 		asmFileBuffer = new BufferedReader(inputFile);	
 
 		//ParseFile();
@@ -92,8 +108,9 @@ public class ParserModule {
 	}
 	
 	public List<String> ParseFileToBinary() {
-		
-		StartBinaryCoding();
+		binaryCodeLines.clear();
+		currentLineNumber = 0;
+		//First Pass
 		try {
 			while(hasMoreCommands()) {
 				
@@ -105,6 +122,19 @@ public class ParserModule {
 			e.printStackTrace();
 			
 		}
+		
+		StartBinaryCoding();
+		
+		
+		//Second Pass
+		for(int a = 0; a < parsedAssembly.size(); a++) {
+			
+			String binaryCode = CodeModule.translateToBinaryCode(parsedAssembly.get(a));
+			binaryCodeLines.add(binaryCode);
+			
+			//System.out.println(binaryCode);
+		}
+
 		
 		return binaryCodeLines;
 		
@@ -123,8 +153,10 @@ public class ParserModule {
 				return hasMoreCommands();
 			}
 			
-			else
+			else {
+				currentLineNumber++;
 				return true;
+			}
 			
 		}
 		
@@ -134,6 +166,7 @@ public class ParserModule {
 	
 	public void advance() {
 
+		
 		List<String> commandComponents = new ArrayList<String>();
 		
 		
@@ -146,45 +179,45 @@ public class ParserModule {
 		
 		currentCommandString = currentCommandString.split("\\/", 2)[0];
 		currentCommandString = currentCommandString.replaceAll("\\s+", "");
-		System.out.println(currentCommandString);
+		//System.out.println(currentCommandString);
 		parseCommandType();
 		
 		if(currentCommandType == "C_COMMAND") {
 			
 			parseCommandC();
 			
-			System.out.println(currentCommandType + ":");
-			System.out.println("Dest:" + currentCommandDest);
-			System.out.println("Comp:" + currentCommandComp);
-			System.out.println("Jump:" + currentCommandJump);
+			//System.out.println(currentCommandType + ":");
+			//System.out.println("Dest:" + currentCommandDest);
+			//System.out.println("Comp:" + currentCommandComp);
+			//System.out.println("Jump:" + currentCommandJump);
 			
 			commandComponents.add(currentCommandType);
 			commandComponents.add(currentCommandDest);
 			commandComponents.add(currentCommandComp);
 			commandComponents.add(currentCommandJump);
 			
-
-			
-			
-			//binaryCodeLines.add(currentCommandComp);
 		}
 		
 		//A or L COMMAND
 		else {
 			
 			parseSymbol();
-			System.out.println(currentCommandType + " | Symbol: " + currentCommandSymbol);
+			//System.out.println(currentCommandType + " | Symbol: " + currentCommandSymbol);
+			
+			if(currentCommandType == "L_COMMAND") {
+				currentLineNumber--; // DO not count the line the L instruction was found on
+				//System.out.println("Adding symbol " + currentCommandSymbol + " on line " + currentLineNumber);
+				symbolTable.addEntry(currentCommandSymbol, currentLineNumber);
+				return;
+			}
 			commandComponents.add(currentCommandType);
 			commandComponents.add(currentCommandSymbol);
 			
 			//aInstruction
 		}
 		
-		
-		String binaryCode = CodeModule.translateToBinaryCode(commandComponents);
-		binaryCodeLines.add(binaryCode);
-		
-		System.out.println(binaryCode);
+		parsedAssembly.add(commandComponents);
+
 		
 	}
 	
@@ -217,7 +250,7 @@ public class ParserModule {
 		
 		if(currentCommandSymbol.charAt(currentCommandSymbol.length()-1) == ')') {
 			
-			currentCommandSymbol = currentCommandSymbol.substring(0, currentCommandSymbol.length()-2);
+			currentCommandSymbol = currentCommandSymbol.substring(0, currentCommandSymbol.length()-1);
 		}
 	}
 
