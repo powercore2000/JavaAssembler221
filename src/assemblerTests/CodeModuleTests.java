@@ -9,7 +9,7 @@ import assembler.CodeModule;
 
 
 
-class BinaryCoderTests {
+class CodeModuleTests {
 
 	@Test
 	void testJump() {
