@@ -108,7 +108,6 @@ public class CodeModule {
 		if(components.get(0) == "C_COMMAND") {
 			
 			returnCode.append("111");
-			
 
 			returnCode.append(comp(components.get(2)));
 			returnCode.append(dest(components.get(1)));			
