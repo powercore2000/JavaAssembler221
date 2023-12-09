@@ -16,11 +16,26 @@ class MainTests {
 	}
 	
 	@Test
-	void testMainMaxAsm() {
+	void testMainMaxLAsm() {
 		//fail("Not yet implemented");
 		Main.main(new String[]{"MaxL.asm"});
 		assertTrue(Main.getAsmFile() != null);
 	}
+	
+	@Test
+	void testMainMaxAsm() {
+		//fail("Not yet implemented");
+		Main.main(new String[]{"Max.asm"});
+		assertTrue(Main.getAsmFile() != null);
+	}
+	
+	@Test
+	void testMainMaxVAsm() {
+		//fail("Not yet implemented");
+		Main.main(new String[]{"MaxV.asm"});
+		assertTrue(Main.getAsmFile() != null);
+	}
+	
 	
 	@Test
 	void testMainZeroARgs() {
