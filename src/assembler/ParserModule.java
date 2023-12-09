@@ -1,8 +1,10 @@
 package assembler;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Parser {
+public class ParserModule {
 
 	BufferedReader asmFileBuffer;
 	boolean moreCommands;
@@ -16,7 +18,17 @@ public class Parser {
 	String currentCommandString;
 	String nextLine;
 	
-	public Parser(FileReader inputFile) {
+	static List<String> binaryCodeLines = new ArrayList<String>();
+	
+	
+	public static void StartBinaryCoding() {
+		
+		binaryCodeLines.clear();
+	}
+	
+	
+	public ParserModule(FileReader inputFile) {
+		
 		
 		asmFileBuffer = new BufferedReader(inputFile);	
 
@@ -66,7 +78,7 @@ public class Parser {
 	
 	public void ParseFile() {
 		
-		
+		StartBinaryCoding();
 		try {
 			while(hasMoreCommands()) {
 				
@@ -76,6 +88,25 @@ public class Parser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public List<String> ParseFileToBinary() {
+		
+		StartBinaryCoding();
+		try {
+			while(hasMoreCommands()) {
+				
+				advance();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		
+		return binaryCodeLines;
 		
 	}
 	
@@ -103,6 +134,9 @@ public class Parser {
 	
 	public void advance() {
 
+		List<String> commandComponents = new ArrayList<String>();
+		
+		
 		currentCommandString = nextLine;
 		currentCommandSymbol = "";
 		currentCommandType = "";
@@ -110,6 +144,9 @@ public class Parser {
 		currentCommandComp = "";
 		currentCommandJump = "";
 		
+		currentCommandString = currentCommandString.split("\\/", 2)[0];
+		currentCommandString = currentCommandString.replaceAll("\\s+", "");
+		System.out.println(currentCommandString);
 		parseCommandType();
 		
 		if(currentCommandType == "C_COMMAND") {
@@ -120,6 +157,16 @@ public class Parser {
 			System.out.println("Dest:" + currentCommandDest);
 			System.out.println("Comp:" + currentCommandComp);
 			System.out.println("Jump:" + currentCommandJump);
+			
+			commandComponents.add(currentCommandType);
+			commandComponents.add(currentCommandDest);
+			commandComponents.add(currentCommandComp);
+			commandComponents.add(currentCommandJump);
+			
+
+			
+			
+			//binaryCodeLines.add(currentCommandComp);
 		}
 		
 		//A or L COMMAND
@@ -127,7 +174,17 @@ public class Parser {
 			
 			parseSymbol();
 			System.out.println(currentCommandType + " | Symbol: " + currentCommandSymbol);
+			commandComponents.add(currentCommandType);
+			commandComponents.add(currentCommandSymbol);
+			
+			//aInstruction
 		}
+		
+		
+		String binaryCode = CodeModule.translateToBinaryCode(commandComponents);
+		binaryCodeLines.add(binaryCode);
+		
+		System.out.println(binaryCode);
 		
 	}
 	
@@ -174,10 +231,17 @@ public class Parser {
 	public void parseCommandC () {
 		
 		C_Command_Phases currentPhase = C_Command_Phases.DEST;
+	
+		
+		if (currentCommandString.indexOf(';') != -1) {
+			
+			currentPhase = C_Command_Phases.COMP;
+		}
+		
 		for(int a = 0; a < currentCommandString.length(); a++) {
 			
 			
-			if(currentCommandString.charAt(a) != '=' &&  currentCommandString.charAt(a) != ';') {
+			if(currentCommandString.charAt(a) != '=' &&  currentCommandString.charAt(a) != ';'  &&  currentCommandString.charAt(a) != '/') {
 				
 				switch(currentPhase) {
 				
@@ -212,6 +276,12 @@ public class Parser {
 				
 				currentPhase = C_Command_Phases.JUMP;
 			}
+			
+			else if(currentCommandString.charAt(a) == '/') {
+							
+				break;
+			}
+			 
 			 
 			
 		}
