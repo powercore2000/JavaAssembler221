@@ -299,28 +299,28 @@ public class ParserModule {
 	
 	
 	
-		
-	public String dest () {
-		
-		 
-		return currentCommandDest;
-	}
 	
-	public String comp() {
-		
-		return currentCommandComp;
-	}
+public String dest () {
 	
-	public String jump() {
-		
-		return currentCommandJump;
-	}
+	 
+	return currentCommandDest;
+}
 
+public String comp() {
 	
-	enum C_Command_Phases {
-		  DEST,
-		  COMP,
-		  JUMP
-		}
+	return currentCommandType;
+}
+
+public String jump() {
+	
+	return currentCommandType;
+}
+
+
+enum C_Command_Phases {
+	  DEST,
+	  COMP,
+	  JUMP
+	}
 	
 }
