@@ -34,7 +34,7 @@ public class SymbolTableModule {
         symbolTable.put("THAT", 4);
        
         
-        symbolTable.put("THAT", 16384);
+        symbolTable.put("SCREEN", 16384);
         symbolTable.put("KBD", 24576);
 	}
 	

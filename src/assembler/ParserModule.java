@@ -132,7 +132,7 @@ public class ParserModule {
 			String binaryCode = CodeModule.translateToBinaryCode(parsedAssembly.get(a));
 			binaryCodeLines.add(binaryCode);
 			
-			System.out.println(binaryCode);
+			//System.out.println(binaryCode);
 		}
 
 		
@@ -179,17 +179,17 @@ public class ParserModule {
 		
 		currentCommandString = currentCommandString.split("\\/", 2)[0];
 		currentCommandString = currentCommandString.replaceAll("\\s+", "");
-		System.out.println(currentCommandString);
+		//System.out.println(currentCommandString);
 		parseCommandType();
 		
 		if(currentCommandType == "C_COMMAND") {
 			
 			parseCommandC();
 			
-			System.out.println(currentCommandType + ":");
-			System.out.println("Dest:" + currentCommandDest);
-			System.out.println("Comp:" + currentCommandComp);
-			System.out.println("Jump:" + currentCommandJump);
+			//System.out.println(currentCommandType + ":");
+			//System.out.println("Dest:" + currentCommandDest);
+			//System.out.println("Comp:" + currentCommandComp);
+			//System.out.println("Jump:" + currentCommandJump);
 			
 			commandComponents.add(currentCommandType);
 			commandComponents.add(currentCommandDest);
@@ -202,11 +202,11 @@ public class ParserModule {
 		else {
 			
 			parseSymbol();
-			System.out.println(currentCommandType + " | Symbol: " + currentCommandSymbol);
+			//System.out.println(currentCommandType + " | Symbol: " + currentCommandSymbol);
 			
 			if(currentCommandType == "L_COMMAND") {
 				currentLineNumber--; // DO not count the line the L instruction was found on
-				System.out.println("Adding symbol " + currentCommandSymbol + " on line " + currentLineNumber);
+				//System.out.println("Adding symbol " + currentCommandSymbol + " on line " + currentLineNumber);
 				symbolTable.addEntry(currentCommandSymbol, currentLineNumber);
 				return;
 			}

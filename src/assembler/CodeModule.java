@@ -119,13 +119,13 @@ public class CodeModule {
 			
 			//Numeric A instruction
 			if(isNumeric(components.get(1))) {
-				System.out.println("Normal int A command: " + components.get(1));
+				//System.out.println("Normal int A command: " + components.get(1));
 				returnCode.append(aInstructionStringConversion(components.get(1)));	
 				return returnCode.toString();
 			}
 			
 			else {
-				System.out.println();
+				//System.out.println();
 				//Symbolic A instruction
 				int address = SymbolTableModule.getAddress(components.get(1));
 				
@@ -138,7 +138,7 @@ public class CodeModule {
 				
 				//This is a variable A instruction
 				else {
-					System.out.println();
+					//System.out.println();
 					address = SymbolTableModule.getNewVariableIndex();
 					SymbolTableModule.addNewVariableEntry(components.get(1));
 					returnCode.append(aInstructionIntConversion(address));
@@ -196,9 +196,9 @@ public class CodeModule {
 	public static String comp(String mnemonic) {
 		
 		String codedComp = aBitInstructionTable.get(mnemonic) + compInstructionTable.get(mnemonic);
-		  System.out.println("A bit : " + aBitInstructionTable.get(mnemonic));
-		  System.out.println("comp bits bit : " + compInstructionTable.get(mnemonic));
-		  System.out.println("final comp bits : " + codedComp);
+		  //System.out.println("A bit : " + aBitInstructionTable.get(mnemonic));
+		  //System.out.println("comp bits bit : " + compInstructionTable.get(mnemonic));
+		  //System.out.println("final comp bits : " + codedComp);
 		return codedComp;
 		
 		
