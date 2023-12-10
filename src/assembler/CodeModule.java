@@ -128,7 +128,7 @@ public class CodeModule {
 		
 		else if (components.get(0) == "A_COMMAND") {
 			String symbol = components.get(1);
-			System.out.println("Inspecting Symbol " +symbol);
+			//System.out.println("Inspecting Symbol " +symbol);
 			//Numeric A instruction
 			if(isNumeric(symbol)) {
 				//System.out.println("Normal int A command: " + components.get(1));
@@ -142,7 +142,7 @@ public class CodeModule {
 				int address = symbolTable.getAddress(symbol);
 				
 				if(address != -1) {
-					System.out.println("Found symbol " + symbol + " in table with address " + address);
+					//System.out.println("Found symbol " + symbol + " in table with address " + address);
 					returnCode.append(aInstructionIntConversion(address));	
 					return returnCode.toString();
 				}
@@ -152,7 +152,7 @@ public class CodeModule {
 				else {
 					
 					address = symbolTable.getNewVariableIndex();
-					System.out.println("Treating symbol " + symbol + " as a varaible at address : " + address);
+					//System.out.println("Treating symbol " + symbol + " as a varaible at address : " + address);
 					symbolTable.addNewVariableEntry(symbol);
 					returnCode.append(aInstructionIntConversion(address));
 					

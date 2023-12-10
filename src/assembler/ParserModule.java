@@ -190,11 +190,11 @@ public class ParserModule {
 		else {
 			
 			parseSymbol();
-			System.out.println(currentCommandType + " | Symbol: " + currentCommandSymbol);
+			//System.out.println(currentCommandType + " | Symbol: " + currentCommandSymbol);
 			
 			if(currentCommandType == "L_COMMAND") {
 				currentLineNumber--; // DO not count the line the L instruction was found on
-				System.out.println("Adding symbol " + currentCommandSymbol + " on line " + currentLineNumber);
+				//System.out.println("Adding symbol " + currentCommandSymbol + " on line " + currentLineNumber);
 				CodeModule.getSymbolTable().addEntry(currentCommandSymbol, currentLineNumber);
 				return;
 			}
