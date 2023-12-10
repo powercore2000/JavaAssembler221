@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
-import assembler.Main;
+import assembler.HackAssembler;
 import assembler.ParserModule;
 
 class ParserModuleTests {
@@ -16,7 +16,7 @@ class ParserModuleTests {
 	@Test
 	void testLogNonEmptyFileLines() {
 		
-		FileReader file = Main.findAsmFile("Add.asm");
+		FileReader file = HackAssembler.findAsmFile("Add.asm");
 		ParserModule parser = new ParserModule(file);
 		try {
 			parser.LogNonEmptyFileLines();
@@ -32,7 +32,7 @@ class ParserModuleTests {
 	
 	@Test
 	void testParseFile() {
-		FileReader file = Main.findAsmFile("MaxL.asm");
+		FileReader file = HackAssembler.findAsmFile("MaxL.asm");
 		ParserModule parser = new ParserModule(file);
 		parser.ParseFile();
 	}
