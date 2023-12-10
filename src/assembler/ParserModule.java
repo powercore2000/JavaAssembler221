@@ -24,22 +24,14 @@ public class ParserModule {
 	
 	List<String> binaryCodeLines = new ArrayList<String>();
 	
-	SymbolTableModule symbolTable = new SymbolTableModule();
-	public void StartBinaryCoding() {
+	//SymbolTableModule symbolTable = new SymbolTableModule();
+	
+	
+	public void resetParser() {
 		
 		binaryCodeLines.clear();
-		/*
-		try {
-			originalFile.reset();
-			asmFileBuffer = new BufferedReader(originalFile);
-			currentLineNumber = 0;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		
-		//asmFileBuffer.reset();
+		CodeModule.setSymbolTable(new SymbolTableModule());
+		currentLineNumber = 0;
 	}
 	
 	
@@ -94,7 +86,7 @@ public class ParserModule {
 	
 	public void ParseFile() {
 		
-		StartBinaryCoding();
+		resetParser();
 		try {
 			while(hasMoreCommands()) {
 				
@@ -108,8 +100,7 @@ public class ParserModule {
 	}
 	
 	public List<String> ParseFileToBinary() {
-		binaryCodeLines.clear();
-		currentLineNumber = 0;
+		resetParser();
 		//First Pass
 		try {
 			while(hasMoreCommands()) {
@@ -121,10 +112,7 @@ public class ParserModule {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
-		}
-		
-		StartBinaryCoding();
-		
+		}		
 		
 		//Second Pass
 		for(int a = 0; a < parsedAssembly.size(); a++) {
@@ -207,7 +195,7 @@ public class ParserModule {
 			if(currentCommandType == "L_COMMAND") {
 				currentLineNumber--; // DO not count the line the L instruction was found on
 				//System.out.println("Adding symbol " + currentCommandSymbol + " on line " + currentLineNumber);
-				symbolTable.addEntry(currentCommandSymbol, currentLineNumber);
+				CodeModule.getSymbolTable().addEntry(currentCommandSymbol, currentLineNumber);
 				return;
 			}
 			commandComponents.add(currentCommandType);

@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class SymbolTableModule {
 
-	private static HashMap<String, Integer> symbolTable = new HashMap<>();
-	private static int newVariableIndex = 16;
+	private HashMap<String, Integer> symbolTable = new HashMap<>();
+	private int newVariableIndex = 16;
 	
 	public SymbolTableModule() {
 		
@@ -38,23 +38,23 @@ public class SymbolTableModule {
         symbolTable.put("KBD", 24576);
 	}
 	
-	public static void addEntry(String symbol, int address) {
+	public void addEntry(String symbol, int address) {
 		
 		symbolTable.put(symbol, address);
 		
 	}
 	
-	public static void addNewVariableEntry(String symbol) {
+	public void addNewVariableEntry(String symbol) {
 		
 		addEntry(symbol, newVariableIndex);
 		newVariableIndex++;
 	}
 	
-	public static int getNewVariableIndex() {return newVariableIndex;}
+	public int getNewVariableIndex() {return newVariableIndex;}
 	
 	
 	
-	public static int getAddress(String symbol) {
+	public int getAddress(String symbol) {
 		
 		if(symbolTable.get(symbol) == null)
 			return -1;

@@ -9,6 +9,7 @@ public class CodeModule {
     private static final HashMap<String, String> aBitInstructionTable = new HashMap<>();
     private static final HashMap<String, String> jumpInstructionTable = new HashMap<>();
     private static final HashMap<String, String> destInstructionTable = new HashMap<>();
+    private static SymbolTableModule symbolTable = new SymbolTableModule();
     
     static{
     	
@@ -100,6 +101,16 @@ public class CodeModule {
 		jumpInstructionTable.put("JMP", "111");
     }
     
+    public static void setSymbolTable(SymbolTableModule newTable) {
+    	
+    	symbolTable = newTable;
+    }
+    
+    public static SymbolTableModule getSymbolTable() {
+    	
+    	return symbolTable;
+    }
+    
     
 	public static String translateToBinaryCode(List<String> components) {
 		
@@ -115,21 +126,22 @@ public class CodeModule {
 		}
 		
 		else if (components.get(0) == "A_COMMAND") {
-			
+			String symbol = components.get(1);
+			//System.out.println("Inspecting Symbol " +symbol);
 			//Numeric A instruction
-			if(isNumeric(components.get(1))) {
+			if(isNumeric(symbol)) {
 				//System.out.println("Normal int A command: " + components.get(1));
-				returnCode.append(aInstructionStringConversion(components.get(1)));	
+				returnCode.append(aInstructionStringConversion(symbol));	
 				return returnCode.toString();
 			}
 			
 			else {
-				//System.out.println();
+				
 				//Symbolic A instruction
-				int address = SymbolTableModule.getAddress(components.get(1));
+				int address = symbolTable.getAddress(symbol);
 				
 				if(address != -1) {
-					
+					//System.out.println("Found symbol " + symbol + " in table with address " + address);
 					returnCode.append(aInstructionIntConversion(address));	
 					return returnCode.toString();
 				}
@@ -137,9 +149,10 @@ public class CodeModule {
 				
 				//This is a variable A instruction
 				else {
-					//System.out.println();
-					address = SymbolTableModule.getNewVariableIndex();
-					SymbolTableModule.addNewVariableEntry(components.get(1));
+					
+					address = symbolTable.getNewVariableIndex();
+					//System.out.println("Treating symbol " + symbol + " as a varaible at address : " + address);
+					symbolTable.addNewVariableEntry(symbol);
 					returnCode.append(aInstructionIntConversion(address));
 					
 				}
